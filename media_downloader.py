@@ -344,6 +344,12 @@ async def download_media(
         Dictionary containing the list of file_formats
         to be downloaded for `audio`, `document` & `video`
         media types.
+    chat_id : Union[int, str]
+        Unique identifier for the target chat or username of the target channel/supergroup.
+        Example: 123456789 or "@channelusername".
+    task_id : int, optional
+        An identifier for the downloading task, by default 0. Useful for tracking
+        the status of multiple concurrent download tasks.
 
     Returns
     -------
