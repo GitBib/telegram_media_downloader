@@ -283,7 +283,7 @@ async def download_task(
 
     await upload_telegram_chat(
         client,
-        node.upload_user if node.upload_user else client,
+        node.upload_user or client,
         app,
         node,
         message,
