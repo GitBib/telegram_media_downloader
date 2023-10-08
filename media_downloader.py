@@ -519,6 +519,8 @@ async def download_chat_task(
 
         for message in skipped_messages:
             if chat_download_config.skip_old_media and message.id <= chat_download_config.last_read_message_id:
+                if message.id in chat_download_config.downloaded_ids:
+                    chat_download_config.downloaded_ids.remove(message.id)
                 logger.info(
                     f"id={message.id} "
                     f"{_t('already download,download skipped')}.\n"
@@ -539,6 +541,8 @@ async def download_chat_task(
         set_meta_data(meta_data, message, caption)
 
         if chat_download_config.skip_old_media and message.id <= chat_download_config.last_read_message_id:
+            if message.id in chat_download_config.downloaded_ids:
+                chat_download_config.downloaded_ids.remove(message.id)
             logger.info(
                 f"id={message.id} "
                 f"{_t('already download,download skipped')}.\n"
