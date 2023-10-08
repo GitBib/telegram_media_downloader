@@ -159,6 +159,7 @@ class ChatDownloadConfig:
         self.total_task: int = 0
         self.finish_task: int = 0
         self.need_check: bool = False
+        self.skip_old_media: bool = False
         self.upload_telegram_chat_id: Union[int, str] = None
 
 
@@ -349,6 +350,7 @@ class Application:
                     ].upload_telegram_chat_id = item.get(
                         "upload_telegram_chat_id", None
                     )
+                    self.chat_download_config[item["chat_id"]].skip_old_media = item.get("skip_old_media", False)
         elif _config.get("chat_id"):
             # Compatible with lower versions
             self._chat_id = _config["chat_id"]
@@ -367,6 +369,7 @@ class Application:
             self.chat_download_config[self._chat_id].last_read_message_id = _config[
                 "last_read_message_id"
             ]
+            self.chat_download_config[self._chat_id].skip_old_media = _config.get("skip_old_media", False)
             download_filter_dict = _config.get("download_filter", None)
 
             self.config["chat"] = [

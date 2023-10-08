@@ -518,6 +518,12 @@ async def download_chat_task(
         )
 
         for message in skipped_messages:
+            if chat_download_config.skip_old_media and message.id <= chat_download_config.last_read_message_id:
+                logger.info(
+                    f"id={message.id} "
+                    f"{_t('already download,download skipped')}.\n"
+                )
+                continue
             if not await add_download_task(message, node):
                 chat_download_config.downloaded_ids.append(message.id)
 
@@ -531,6 +537,13 @@ async def download_chat_task(
         else:
             caption = app.get_caption_name(node.chat_id, message.media_group_id)
         set_meta_data(meta_data, message, caption)
+
+        if chat_download_config.skip_old_media and message.id <= chat_download_config.last_read_message_id:
+            logger.info(
+                f"id={message.id} "
+                f"{_t('already download,download skipped')}.\n"
+            )
+            continue
 
         if not app.need_skip_message(
             chat_download_config, message.id, meta_data
